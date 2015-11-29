@@ -19,7 +19,7 @@ public class Volume implements Serializable, Cloneable {
 	public int Hour;
 	public String CrossStreet;
 	public String direction;
-	public int volume;
+	public double volume;
 	public String Borough;
 	public String zip;
 	public int personInjured;
@@ -51,31 +51,66 @@ public class Volume implements Serializable, Cloneable {
 		}
 	}
 	
+	public static String expandStreet(String street) {
+		String[] arr = street.split("\\s+");
+		String name = arr[arr.length-1];
+		String expanded = null;
+		if(name.equals("ave")) {
+			expanded = "avenue";
+		}else if(name.equals("st")) {
+			expanded = "street";
+		}else if(name.equals("pl")) {
+			expanded = "place";
+		}else if(name.equals("rd")) {
+			expanded = "road";
+		}else if(name.equals("blvd")) {
+			expanded = "boulevard";
+		}else if(name.equals("apt")) {
+			expanded = "apartment";
+		}else if(name.equals("cswy")) {
+			expanded = "causeway";
+		}else if(name.equals("hwy")) {
+			expanded = "highway";
+		}
+		else {
+			return street;
+		}
+		
+		String newStr = "";
+		int i = 0;
+		for(;i<arr.length-1;i++) {
+			newStr += arr[i]+" ";
+		}
+		newStr += expanded;
+		return newStr;
+	}
+	
 	public static void parse() throws IOException, CloneNotSupportedException{
-		File f = new File("/data/Traffic_Volume_Counts__2012-2013_.csv");
+		File f = new File("data/Traffic_Volume_Counts__2012-2013_.csv");
 		BufferedReader buf = new BufferedReader(new FileReader(f));
 		String line;
 		HashMap<String, List<Volume>> map = new HashMap<String, List<Volume>>();
 		while((line = buf.readLine()) != null){
-			System.out.println(line);
+			//System.out.println(line);
 			String[] arr = line.split(";");
 			for(int k = 0; k < 2; k++){
 				
 				Volume v = new Volume();
 				for(int i = 0; i < 29; i++){
 					switch(i){
-					case 0: v.Road = arr[i].toLowerCase();
+					case 0: v.Road = expandStreet(arr[i].toLowerCase().trim());
 							break;
-					case 1: if(k==0) v.CrossStreet = arr[i].toLowerCase();
+					case 1: if(k==0) v.CrossStreet = expandStreet(arr[i].toLowerCase().trim());
 							break;
-					case 2: if(k==1) v.CrossStreet = arr[i].toLowerCase();
+					case 2: if(k==1) v.CrossStreet = expandStreet(arr[i].toLowerCase().trim());
 							break;
-					case 3: v.direction = arr[i].toLowerCase();
+					case 3: v.direction = arr[i].toLowerCase().trim();
 							break;
-					case 4: v.Date = arr[i];
+					case 4: v.Date = arr[i].trim();
 							break;
 					default: Volume v1 = (Volume) v.clone();
 							 v1.Hour = i-5;
+							 v1.volume = Double.parseDouble(arr[i].trim());
 							 String key = v1.Date+v1.Hour+v1.Road+v1.CrossStreet;
 							 if(map.containsKey(key)){
 								 List<Volume> lv = map.get(key);
@@ -92,61 +127,61 @@ public class Volume implements Serializable, Cloneable {
 			}
 		}
 		
-		File t = new File("/data/NYPD_Motor_Vehicle_Collisions.csv");
+		File t = new File("data/NYPD_Motor_Vehicle_Collisions.csv");
 		buf = new BufferedReader(new FileReader(t));
 		while( (line = buf.readLine() )!= null ){
 			String[] array = line.split(";");
-			System.out.println(line);
+			//System.out.println(line);
 			Volume newV = new Volume();
 			for(int i = 0; i < array.length; i++){
 				switch(i){
-				case 0: newV.Date = array[i];
+				case 0: newV.Date = array[i].trim();
 						break;
-				case 1: newV.Hour = Integer.parseInt(array[i].split(":")[0]);
+				case 1: newV.Hour = Integer.parseInt(array[i].split(":")[0].trim());
 						break;
-				case 2: newV.Borough = array[i].toLowerCase();
+				case 2: newV.Borough = array[i].toLowerCase().trim();
 						break;
-				case 3: newV.zip = array[i];
+				case 3: newV.zip = array[i].trim();
 						break;
-				case 4: newV.Road = array[i].toLowerCase();
+				case 4: newV.Road = expandStreet(array[i].toLowerCase().trim());
 						break;
-				case 5: newV.CrossStreet = array[i].toLowerCase();
+				case 5: newV.CrossStreet = expandStreet(array[i].toLowerCase().trim());
 						break;
-				case 6: newV.personInjured = Integer.parseInt(array[i]);
+				case 6: newV.personInjured = Integer.parseInt(array[i].trim());
 						break;
-				case 7: newV.perdestrianKilled = Integer.parseInt(array[i]);
+				case 7: newV.perdestrianKilled = Integer.parseInt(array[i].trim());
 						break;
-				case 8: newV.pedestrianInjured = Integer.parseInt(array[i]);
+				case 8: newV.pedestrianInjured = Integer.parseInt(array[i].trim());
 						break;
-				case 9: newV.perdestrianKilled = Integer.parseInt(array[i]);
+				case 9: newV.perdestrianKilled = Integer.parseInt(array[i].trim());
 						break;
-				case 10: newV.cyclistInjured = Integer.parseInt(array[i]);
+				case 10: newV.cyclistInjured = Integer.parseInt(array[i].trim());
 						break;
-				case 11: newV.cyclistKilled = Integer.parseInt(array[i]);
+				case 11: newV.cyclistKilled = Integer.parseInt(array[i].trim());
 						break;
-				case 12: newV.motoristInjured = Integer.parseInt(array[i]);
+				case 12: newV.motoristInjured = Integer.parseInt(array[i].trim());
 						break;
-				case 13: newV.motoristKilled = Integer.parseInt(array[i]);
+				case 13: newV.motoristKilled = Integer.parseInt(array[i].trim());
 						break;
-				case 14: newV.CFV1 = array[i].toLowerCase();
+				case 14: newV.CFV1 = array[i].toLowerCase().trim();
 						break;
-				case 15: newV.CFV2 = array[i].toLowerCase();
+				case 15: newV.CFV2 = array[i].toLowerCase().trim();
 						break;
-				case 16: newV.CFV3 = array[i].toLowerCase();
+				case 16: newV.CFV3 = array[i].toLowerCase().trim();
 						break;
-				case 17: newV.CFV4 = array[i].toLowerCase();
+				case 17: newV.CFV4 = array[i].toLowerCase().trim();
 						break;
-				case 18: newV.CFV5 = array[i].toLowerCase();
+				case 18: newV.CFV5 = array[i].toLowerCase().trim();
 						break;
-				case 19: newV.VTC1 = array[i].toLowerCase();
+				case 19: newV.VTC1 = array[i].toLowerCase().trim();
 						break;
-				case 20: newV.VTC2 = array[i].toLowerCase();
+				case 20: newV.VTC2 = array[i].toLowerCase().trim();
 						break;
-				case 21: newV.VTC3 = array[i].toLowerCase();
+				case 21: newV.VTC3 = array[i].toLowerCase().trim();
 						break;
-				case 22: newV.VTC4 = array[i].toLowerCase();
+				case 22: newV.VTC4 = array[i].toLowerCase().trim();
 						break;
-				case 23: newV.VTC5 = array[i].toLowerCase();
+				case 23: newV.VTC5 = array[i].toLowerCase().trim();
 						break;
 				}
 				
@@ -167,7 +202,7 @@ public class Volume implements Serializable, Cloneable {
 			
 		}
 		
-		File newFile = new File("/data/final_data.csv");
+		File newFile = new File("data/final_data.csv");
 		BufferedWriter writer = new BufferedWriter(new FileWriter(newFile));
 		
 		
