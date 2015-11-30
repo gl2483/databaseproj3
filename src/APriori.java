@@ -28,10 +28,12 @@ public class APriori {
 	int numIndexes = 1;
 	double min_support, min_confidence;
 	boolean stop = false;
+	String filePath;	
 	
-	public APriori(double support, double confidence) {
+	public APriori(String filepath, double support, double confidence) {
 		this.min_support = support;
 		this.min_confidence = confidence;
+		this.filePath = filepath;
 		prevItemSets = new ArrayList<TreeSet<SetItem>>();
 		prevItemSetsMap = new HashMap<TreeSet<SetItem>, int[]>();
 		allValidItemSets = new HashMap<TreeSet<SetItem>, int[]>();
@@ -40,7 +42,7 @@ public class APriori {
 	
 	
 	public void getData(){
-		File f = new File("data/final_data.csv");
+		File f = new File(filePath);
 		//File f = new File("data/test.csv");
 		try {
 			BufferedReader buf = new BufferedReader(new FileReader(f));
