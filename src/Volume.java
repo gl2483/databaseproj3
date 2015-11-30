@@ -19,7 +19,7 @@ public class Volume implements Serializable, Cloneable {
 	public int Hour;
 	public String CrossStreet;
 	public String direction;
-	public double volume;
+	public int volume;
 	public String Borough;
 	public String zip;
 	public int personInjured;
@@ -43,10 +43,8 @@ public class Volume implements Serializable, Cloneable {
 	
 	public static void main(String[] args){
 		try {
-			System.out.println("ajsdlkjalsdk");
 			parse();
 		} catch (IOException | CloneNotSupportedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -96,9 +94,11 @@ public class Volume implements Serializable, Cloneable {
 			for(int k = 0; k < 2; k++){
 				
 				Volume v = new Volume();
+				boolean badLine = false;
 				for(int i = 0; i < 29; i++){
 					switch(i){
 					case 0: v.Road = expandStreet(arr[i].toLowerCase().trim());
+							if(v.Road == null || v.Road.equals("")) badLine = true;
 							break;
 					case 1: if(k==0) v.CrossStreet = expandStreet(arr[i].toLowerCase().trim());
 							break;
@@ -107,10 +107,23 @@ public class Volume implements Serializable, Cloneable {
 					case 3: v.direction = arr[i].toLowerCase().trim();
 							break;
 					case 4: v.Date = arr[i].trim();
+							if(v.Date == null || v.Date.equals("")) badLine = true;
 							break;
 					default: Volume v1 = (Volume) v.clone();
 							 v1.Hour = i-5;
-							 v1.volume = Double.parseDouble(arr[i].trim());
+							 double volume = Double.parseDouble(arr[i].trim());
+							 if(volume < .1) {
+							 	badLine = true;
+							 	break;
+							 }
+							 double mod = volume % 50;
+							 if(mod >= 25) {
+							 	v1.volume = (int) (volume + (50 - mod));
+							 } else {
+							 	v1.volume = (int) (volume - mod);
+							 }
+							 
+							 
 							 String key = v1.Date+v1.Hour+v1.Road+v1.CrossStreet;
 							 if(map.containsKey(key)){
 								 List<Volume> lv = map.get(key);
@@ -164,24 +177,34 @@ public class Volume implements Serializable, Cloneable {
 				case 13: newV.motoristKilled = Integer.parseInt(array[i].trim());
 						break;
 				case 14: newV.CFV1 = array[i].toLowerCase().trim();
+						if(newV.CFV1.equals("unknown") || newV.CFV1.equals("unspecified")) newV.CFV1 = null;
 						break;
 				case 15: newV.CFV2 = array[i].toLowerCase().trim();
+						if(newV.CFV2.equals("unknown") || newV.CFV2.equals("unspecified")) newV.CFV2 = null;
 						break;
 				case 16: newV.CFV3 = array[i].toLowerCase().trim();
+						if(newV.CFV3.equals("unknown") || newV.CFV3.equals("unspecified")) newV.CFV3 = null;
 						break;
 				case 17: newV.CFV4 = array[i].toLowerCase().trim();
+						if(newV.CFV4.equals("unknown") || newV.CFV4.equals("unspecified")) newV.CFV4 = null;
 						break;
 				case 18: newV.CFV5 = array[i].toLowerCase().trim();
+						if(newV.CFV5.equals("unknown") || newV.CFV5.equals("unspecified")) newV.CFV5 = null;
 						break;
 				case 19: newV.VTC1 = array[i].toLowerCase().trim();
+						if(newV.VTC1.equals("unknown") || newV.VTC1.equals("unspecified")) newV.VTC1 = null;
 						break;
 				case 20: newV.VTC2 = array[i].toLowerCase().trim();
+						if(newV.VTC2.equals("unknown") || newV.VTC2.equals("unspecified")) newV.VTC2 = null;
 						break;
 				case 21: newV.VTC3 = array[i].toLowerCase().trim();
+						if(newV.VTC3.equals("unknown") || newV.VTC3.equals("unspecified")) newV.VTC3 = null;
 						break;
 				case 22: newV.VTC4 = array[i].toLowerCase().trim();
+						if(newV.VTC4.equals("unknown") || newV.VTC4.equals("unspecified")) newV.VTC4 = null;
 						break;
 				case 23: newV.VTC5 = array[i].toLowerCase().trim();
+						if(newV.VTC5.equals("unknown") || newV.VTC5.equals("unspecified")) newV.VTC5 = null;
 						break;
 				}
 				
