@@ -142,101 +142,99 @@ public class Volume implements Serializable, Cloneable {
 		
 		File t = new File("data/NYPD_Motor_Vehicle_Collisions.csv");
 		buf = new BufferedReader(new FileReader(t));
+		HashMap<String, List<Volume>> newMap = new HashMap<String, List<Volume>>();
 		while( (line = buf.readLine() )!= null ){
 			String[] array = line.split(";");
 			//System.out.println(line);
 			Volume newV = new Volume();
-			for(int i = 0; i < array.length; i++){
-				switch(i){
-				case 0: newV.Date = array[i].trim();
-						break;
-				case 1: newV.Hour = Integer.parseInt(array[i].split(":")[0].trim());
-						break;
-				case 2: newV.Borough = array[i].toLowerCase().trim();
-						break;
-				case 3: newV.zip = array[i].trim();
-						break;
-				case 4: newV.Road = expandStreet(array[i].toLowerCase().trim());
-						break;
-				case 5: newV.CrossStreet = expandStreet(array[i].toLowerCase().trim());
-						break;
-				case 6: newV.personInjured = Integer.parseInt(array[i].trim());
-						break;
-				case 7: newV.perdestrianKilled = Integer.parseInt(array[i].trim());
-						break;
-				case 8: newV.pedestrianInjured = Integer.parseInt(array[i].trim());
-						break;
-				case 9: newV.perdestrianKilled = Integer.parseInt(array[i].trim());
-						break;
-				case 10: newV.cyclistInjured = Integer.parseInt(array[i].trim());
-						break;
-				case 11: newV.cyclistKilled = Integer.parseInt(array[i].trim());
-						break;
-				case 12: newV.motoristInjured = Integer.parseInt(array[i].trim());
-						break;
-				case 13: newV.motoristKilled = Integer.parseInt(array[i].trim());
-						break;
-				case 14: newV.CFV1 = array[i].toLowerCase().trim();
-						if(newV.CFV1.equals("unknown") || newV.CFV1.equals("unspecified")) newV.CFV1 = null;
-						break;
-				case 15: newV.CFV2 = array[i].toLowerCase().trim();
-						if(newV.CFV2.equals("unknown") || newV.CFV2.equals("unspecified")) newV.CFV2 = null;
-						break;
-				case 16: newV.CFV3 = array[i].toLowerCase().trim();
-						if(newV.CFV3.equals("unknown") || newV.CFV3.equals("unspecified")) newV.CFV3 = null;
-						break;
-				case 17: newV.CFV4 = array[i].toLowerCase().trim();
-						if(newV.CFV4.equals("unknown") || newV.CFV4.equals("unspecified")) newV.CFV4 = null;
-						break;
-				case 18: newV.CFV5 = array[i].toLowerCase().trim();
-						if(newV.CFV5.equals("unknown") || newV.CFV5.equals("unspecified")) newV.CFV5 = null;
-						break;
-				case 19: newV.VTC1 = array[i].toLowerCase().trim();
-						if(newV.VTC1.equals("unknown") || newV.VTC1.equals("unspecified")) newV.VTC1 = null;
-						break;
-				case 20: newV.VTC2 = array[i].toLowerCase().trim();
-						if(newV.VTC2.equals("unknown") || newV.VTC2.equals("unspecified")) newV.VTC2 = null;
-						break;
-				case 21: newV.VTC3 = array[i].toLowerCase().trim();
-						if(newV.VTC3.equals("unknown") || newV.VTC3.equals("unspecified")) newV.VTC3 = null;
-						break;
-				case 22: newV.VTC4 = array[i].toLowerCase().trim();
-						if(newV.VTC4.equals("unknown") || newV.VTC4.equals("unspecified")) newV.VTC4 = null;
-						break;
-				case 23: newV.VTC5 = array[i].toLowerCase().trim();
-						if(newV.VTC5.equals("unknown") || newV.VTC5.equals("unspecified")) newV.VTC5 = null;
-						break;
+			boolean badLine = false;
+			for(int j = 0; j < 4; j++) {
+				for(int i = 0; i < array.length; i++){
+					switch(i){
+					case 0: newV.Date = array[i].trim();
+							break;
+					case 1: newV.Hour = Integer.parseInt(array[i].split(":")[0].trim());
+							break;
+					case 2: newV.Borough = array[i].toLowerCase().trim();
+							if(newV.Borough == null || newV.Borough.equals("") || newV.Borough.equals("null")) badLine = true;
+							break;
+					case 3: newV.zip = array[i].trim();
+							if(newV.zip == null || newV.zip.equals("") || newV.zip.equals("null")) badLine = true;
+							break;
+					case 4: newV.Road = expandStreet(array[i].toLowerCase().trim());
+							break;
+					case 5: newV.CrossStreet = expandStreet(array[i].toLowerCase().trim());
+							break;
+					case 6: newV.personInjured = Integer.parseInt(array[i].trim());
+							break;
+					case 7: newV.personKilled = Integer.parseInt(array[i].trim());
+							break;
+					case 14: if(j < 2) {
+								newV.CFV1 = array[i].toLowerCase().trim();
+							}else {
+								break;
+							}
+							if(newV.CFV1.equals("unknown") || newV.CFV1.equals("unspecified")) newV.CFV1 = null;
+							break;
+					case 15: if(j > 2) {
+								newV.CFV1 = array[i].toLowerCase().trim();
+							}else {
+								break;
+							}
+							if(newV.CFV1.equals("unknown") || newV.CFV1.equals("unspecified")) newV.CFV1 = null;
+							break;
+					case 19: if(j == 0 || j==2) {
+								newV.VTC1 = array[i].toLowerCase().trim();
+							}else {
+								break;
+							}
+							if(newV.VTC1.equals("unknown") || newV.VTC1.equals("unspecified")) newV.VTC1 = null;
+							break;
+					case 20: if(j==1 || j == 3) {
+								newV.VTC1 = array[i].toLowerCase().trim();
+							}else {
+								break;
+							}
+							if(newV.VTC1.equals("unknown") || newV.VTC1.equals("unspecified")) newV.VTC1 = null;
+							break;
+					}
+					
+					if(badLine) break;
 				}
 				
+				if(badLine) break;
+				String key = newV.Date+newV.Hour+newV.Road+newV.CrossStreet;
+				List<Volume> list = new ArrayList<Volume>();
+				list.add(newV);
+				newMap.put(key, list);
+				
 			}
-			
-			String key = newV.Date+newV.Hour+newV.Road+newV.CrossStreet;
-			if(map.containsKey(key)){
+		
+			/*if(map.containsKey(key)){
 				List<Volume> lv = map.get(key);
 				for(Volume v : lv){
 					v.merge(newV);
 				}
+				newMap.put(key, lv);
 			}
 			else{
 				List<Volume> lv = new ArrayList<Volume>();
 				lv.add(newV);
-				map.put(key, lv);
-			}
+				newMap.put(key, lv);
+			}*/
 			
 		}
 		
 		File newFile = new File("data/final_data.csv");
 		BufferedWriter writer = new BufferedWriter(new FileWriter(newFile));
 		
-		
-		for(Map.Entry<String, List<Volume>> entry : map.entrySet()){
+		System.out.println("size: "+newMap.size());
+		for(Map.Entry<String, List<Volume>> entry : newMap.entrySet()){
 			for(Volume v : entry.getValue()){
 				String l = "";
-				l = v.Date +","+ v.Hour +","+ v.Road +","+ v.CrossStreet +","+ v.direction +","+
-				    v.Borough  +","+v.volume +","+ v.zip +","+ v.personInjured +","+ v.personKilled +","+
-					v.pedestrianInjured +","+ v.perdestrianKilled +","+ v.cyclistInjured +","+ v.cyclistKilled +","+
-				    v.motoristInjured +","+ v.motoristKilled +","+ v.CFV1 +","+ v.CFV2 +","+v.CFV3 +","+v.CFV4 +","+
-					v.CFV5 +","+v.VTC1 +","+v.VTC2 +","+v.VTC3 +","+v.VTC4 +","+v.VTC5+ '\n';
+				l = v.Date +","+ v.Hour +","+ v.Road +","+ v.CrossStreet + ","+
+				    v.Borough  +","+ v.zip +","+ v.personInjured +","+ v.personKilled +","+
+					v.CFV1 + "," +v.VTC1 + '\n';
 				writer.write(l);
 			}
 		}

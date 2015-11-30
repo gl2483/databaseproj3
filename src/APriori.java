@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import java.io.*;
 
 
 public class APriori {
@@ -17,11 +18,14 @@ public class APriori {
 	
 	
 	List<TreeSet<SetItem>> prevItemSets;  
-	HashMap<TreeSet<SetItem>, Integer> prevItemSetsMap;
-	List<TreeSet<SetItem>> allValidItemSets;
+	HashMap<TreeSet<SetItem>, int[]> prevItemSetsMap;
+	HashMap<TreeSet<SetItem>, int[]> allValidItemSets;
+	
+	Set<Association> associationRules;
 	
 	List<String[]> allrecords = new ArrayList<String[]>();
 	int record_count = 0;
+	int numIndexes = 1;
 	double min_support, min_confidence;
 	boolean stop = false;
 	
@@ -29,13 +33,15 @@ public class APriori {
 		this.min_support = support;
 		this.min_confidence = confidence;
 		prevItemSets = new ArrayList<TreeSet<SetItem>>();
-		prevItemSetsMap = new HashMap<TreeSet<SetItem>, Integer>();
-		allValidItemSets = new ArrayList<TreeSet<SetItem>>();
+		prevItemSetsMap = new HashMap<TreeSet<SetItem>, int[]>();
+		allValidItemSets = new HashMap<TreeSet<SetItem>, int[]>();
+		associationRules = new TreeSet<Association>();
 	}
 	
 	
 	public void getData(){
 		File f = new File("data/final_data.csv");
+		//File f = new File("data/test.csv");
 		try {
 			BufferedReader buf = new BufferedReader(new FileReader(f));
 
@@ -46,6 +52,7 @@ public class APriori {
 				allrecords.add(array);
 			}
 			record_count = allrecords.size();
+			numIndexes = record_count / 32 + 1;
 					
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -53,65 +60,61 @@ public class APriori {
 		
 	}
 	
-	public List<TreeSet<SetItem>> checkCandidateThresh(List<TreeSet<SetItem>> list) {
-		List<TreeSet<SetItem>> candidates = new ArrayList<TreeSet<SetItem>>();
-		Comparator<SetItem> comp = new SetItemComparator();
-		TreeMap<SetItem, Integer> map = new TreeMap<SetItem, Integer>(comp);
-		
-		System.out.println("Number of sets to check support for: "+list.size());
-		int i = 0;
-		for(TreeSet<SetItem> set : list) {
-			int count = 0;
-			
-			//System.out.println("i: "+i);
-			//i++;
-			for(String[] row : allrecords) {
-				boolean hasAll = true;
-				for(SetItem item : set) {
-					if(!item.value.equals(row[item.rowIndex])) {
-						hasAll = false;
-						break;
-					}
-				}
-				
-				if(hasAll) count++;
-			}
-			
-			if(((double) count / (double) record_count) >= min_support) {
-				candidates.add(set);
-			}
+	public static int[] insertIntoByteArray(int[] array, int index) {
+		int arrOffset = index / 32;
+		int intOffset = index % 32;
+		array[arrOffset] |= (1 << intOffset);
+		return array;
+	}
+	
+	public static int getNumBitsSet(int[] array) {
+		int count = 0;
+		for(int val : array) {
+			count += Integer.bitCount(val);
 		}
-		
-		return candidates;
+		return count;
+	}
+	
+	public static int[] arrayBitIntersection(int[] arr1, int[] arr2) {
+		for(int i = 0; i<arr1.length; i++) {
+			arr1[i] &= arr2[i];
+		}
+		return arr1;
 	}
 	
 	
 	public void generateOneItemSets() {
 		Comparator<SetItem> comp = new SetItemComparator();
-		TreeMap<SetItem, Integer> map = new TreeMap<SetItem, Integer>(comp);
+		TreeMap<SetItem, int[]> map = new TreeMap<SetItem, int[]>(comp);
 		
+		int rowNum = 0;
 		for(String[] row : allrecords) {
 			for(int i=0; i<row.length; i++) {
 				if(row[i] == null || row[i].equals("") || row[i].equals("null")) continue;
 				SetItem newItem = new SetItem(i, row[i]);
 				
 				if(map.containsKey(newItem)) {
-					int count = map.get(newItem);
-					map.put(newItem, ++count);
+					int[] rows = map.get(newItem);
+					rows = insertIntoByteArray(rows, rowNum);
+					map.put(newItem, rows);
 				}else {
-					map.put(newItem, 1);
+					int[] rows = new int[numIndexes];
+					rows = insertIntoByteArray(rows, rowNum);
+					map.put(newItem, rows);
 				}
 			}
+			rowNum++;
 		}
 		
-		for(Map.Entry<SetItem, Integer> item : map.entrySet()) {
-			double sup = (double) item.getValue() / (double) record_count;
+		for(Map.Entry<SetItem, int[]> item : map.entrySet()) {
+			double sup = ((double) getNumBitsSet(item.getValue())) / ((double) record_count);
 			if(sup >= min_support) {
-				//System.out.println("Entry: (row: "+item.getKey().rowIndex+", "+ item.getKey().value +"), count: "+item.getValue());
+				System.out.println("Entry: (row: "+item.getKey().rowIndex+", "+ item.getKey().value +"), count: "+getNumBitsSet(item.getValue()));
 				TreeSet<SetItem> newSet = new TreeSet<SetItem>(comp);
 				newSet.add(item.getKey());
 				prevItemSets.add(newSet);
-				prevItemSetsMap.put(newSet, 0);
+				prevItemSetsMap.put(newSet, item.getValue());
+				allValidItemSets.put(newSet, item.getValue());
 			}
 		}
 		
@@ -128,8 +131,21 @@ public class APriori {
 		return true;
 	}
 	
+	public void addRules(TreeSet<SetItem> set, int[] rows) {
+		for(SetItem item : set) {
+			TreeSet<SetItem> subSet = (TreeSet<SetItem>) set.clone();
+			subSet.remove(item);
+			int[] suppLeft = allValidItemSets.get(subSet);
+			double conf = (double) getNumBitsSet(rows) / (double) getNumBitsSet(suppLeft);
+			Association rule = new Association(subSet, item, conf);
+			if(rule.confidence >= min_confidence) associationRules.add(rule);
+		}
+	}
+	
 	public List<TreeSet<SetItem>> generateCandidateItemSets() {
 		List<TreeSet<SetItem>> candidates = new ArrayList<TreeSet<SetItem>>();
+		HashMap<TreeSet<SetItem>, int[]> newMap = new HashMap<TreeSet<SetItem>, int[]>();
+		int count = 0;
 		for(int i = 0; i<prevItemSets.size(); i++) {
 
 			for(int j = i+1; j<prevItemSets.size(); j++) {
@@ -153,12 +169,37 @@ public class APriori {
 				if(size == curSet.size()) continue;
 				
 				if(isValid(curSet)) {
-					candidates.add(curSet);
+					count++;
+					int[] curRows = Arrays.copyOf(prevItemSetsMap.get(prevItemSets.get(i)), prevItemSetsMap.get(prevItemSets.get(i)).length); 
+					int[] joinRows = Arrays.copyOf(prevItemSetsMap.get(prevItemSets.get(j)), prevItemSetsMap.get(prevItemSets.get(j)).length);
+					
+					/*System.out.println("curRows");
+					for(int val : curRows) System.out.println(val);
+					System.out.println("joinRows");
+					for(int val : joinRows) System.out.println(val);*/
+					
+					curRows = arrayBitIntersection(curRows, joinRows);
+					
+					/*System.out.println("new set");
+					for(SetItem item : curSet) System.out.println(item.value+" "+((double) curRows.size() / (double) record_count));
+					for(int val : curRows) System.out.println(val);*/
+					
+					if(((double) getNumBitsSet(curRows) / (double) record_count) >= min_support) {
+						candidates.add(curSet);
+						addRules(curSet, curRows);
+						newMap.put(curSet, curRows);
+						allValidItemSets.put(curSet, curRows);
+					}
 				}
+				
+				
 			}
 		}
+		System.out.println("Count total: "+count);
+		prevItemSetsMap = newMap;
+		prevItemSets = candidates;
 		
-		return checkCandidateThresh(candidates);
+		return candidates;
 	}
 	
 	
@@ -175,21 +216,143 @@ public class APriori {
 		List<TreeSet<SetItem>> candidateItemSets = generateCandidateItemSets();
 		while(candidateItemSets.size() > 0) {
 		
-			System.out.println("size 2: There are "+candidateItemSets.size()+" sets");
-			prevItemSets = candidateItemSets;
-			prevItemSetsMap = new HashMap<TreeSet<SetItem>, Integer>();
-			for(TreeSet<SetItem> set : candidateItemSets) {
-				//System.out.println("new set");
-				//for(SetItem item : set) System.out.println("item: "+item.rowIndex+", "+item.value);
-				prevItemSetsMap.put(set, 0);
-				allValidItemSets.add(set);
-			}
-			
-		
+			System.out.println("size "+i+": There are "+candidateItemSets.size()+" sets");
 			candidateItemSets = generateCandidateItemSets();
+			i++;
 		}
 		
 		System.out.println("num of total sets: "+allValidItemSets.size());
+		
+		for(Map.Entry<TreeSet<SetItem>, int[]> entry : allValidItemSets.entrySet()) {
+			for(SetItem item : entry.getKey()) System.out.print(item.value+", ");
+			System.out.println(((double)entry.getValue().length / (double)record_count));
+		}
+		
+		
+		
+		Comparator<Map.Entry<TreeSet<SetItem>, int[]>> comp = new SetCountComparator();
+		Comparator<Association> confComp = new AssociationComparator();
+		
+		PriorityQueue<Map.Entry<TreeSet<SetItem>, int[]>> pQueue = new PriorityQueue<Map.Entry<TreeSet<SetItem>, int[]>>(allValidItemSets.size(), comp);
+		PriorityQueue<Association> confQueue = new PriorityQueue<Association>(associationRules.size(), confComp);
+		
+		for(Map.Entry<TreeSet<SetItem>, int[]> entry : allValidItemSets.entrySet()) {
+			pQueue.add(entry);
+		}
+		
+		for(Association rule : associationRules) {
+			confQueue.add(rule);
+		}
+		
+		PrintWriter out;
+		try {
+			File output = new File("output.txt");
+			out = new PrintWriter(output);
+		}catch(IOException e) {
+			e.printStackTrace();
+			return;
+		}
+		out.println("==Frequent itemsets (min_sup="+(min_support * 100)+"%)");
+		Map.Entry<TreeSet<SetItem>, int[]> entry;
+		
+		while((entry = pQueue.poll()) != null) {
+			out.print("[");
+			int k = 0;
+			for(SetItem item : entry.getKey()) {
+				switch(item.rowIndex){
+				case 1: out.print("Hour: "+item.value);
+						break;
+				case 2: out.print("Road: "+item.value);
+						break;
+				case 3: out.print("CrossStreet: "+item.value);
+						break;
+				case 5: out.print("Zip: "+item.value);
+						break;
+				case 6: out.print("Injuries: "+item.value);
+						break;
+				case 7: out.print("Killed: "+item.value);
+						break;
+				case 8: out.print("Contrib Factor: "+item.value);
+						break;
+				case 9: out.print("Vehicle: "+item.value);
+						break;			
+				default: out.print(item.value);	
+				}
+				
+				k++;
+				if(k != entry.getKey().size()) {
+					out.print(",");
+				}	
+			}
+			out.println("], "+((double)getNumBitsSet(entry.getValue()) / (double) record_count * 100)+"%");
+			out.flush();
+		}
+		
+		out.println("\n");
+		out.println("==High-confidence association rules (min_conf="+(min_confidence * 100)+"%)");
+		Association rule;
+		while((rule = confQueue.poll()) != null) {
+			out.print("[");
+			int k = 0;
+			for(SetItem item : rule.left) {
+				switch(item.rowIndex){
+				case 1: out.print("Hour: "+item.value);
+						break;
+				case 2: out.print("Road: "+item.value);
+						break;
+				case 3: out.print("CrossStreet: "+item.value);
+						break;
+				case 5: out.print("Zip: "+item.value);
+						break;
+				case 6: out.print("Injuries: "+item.value);
+						break;
+				case 7: out.print("Killed: "+item.value);
+						break;
+				case 8: out.print("Contrib Factor: "+item.value);
+						break;
+				case 9: out.print("Vehicle: "+item.value);
+						break;			
+				default: out.print(item.value);	
+				}
+				
+				k++;
+				if(k != rule.left.size()) {
+					out.print(",");
+				}	
+			}
+			out.print("] => [");
+			
+			switch(rule.right.rowIndex){
+				case 1: out.print("Hour: "+rule.right.value);
+						break;
+				case 2: out.print("Road: "+rule.right.value);
+						break;
+				case 3: out.print("CrossStreet: "+rule.right.value);
+						break;
+				case 5: out.print("Zip: "+rule.right.value);
+						break;
+				case 6: out.print("Injuries: "+rule.right.value);
+						break;
+				case 7: out.print("Killed: "+rule.right.value);
+						break;
+				case 8: out.print("Contrib Factor: "+rule.right.value);
+						break;
+				case 9: out.print("Vehicle: "+rule.right.value);
+						break;			
+				default: out.print(rule.right.value);	
+			}
+			
+			TreeSet<SetItem> temp = rule.left;
+			temp.add(rule.right);
+			
+			double support = (double) getNumBitsSet(allValidItemSets.get(temp)) / (double)record_count;
+			out.println("] (Conf: "+(rule.confidence * 100)+"%, Supp: "+(support * 100) + "%)");
+			out.flush();
+			
+			
+		}
+		
+		
 		
 	
 		/*
