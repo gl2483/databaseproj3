@@ -8,15 +8,6 @@ import java.io.*;
 
 public class APriori {
 	
-	//the list of large set
-	HashMap<Integer,Set<String>> largeSetList = new HashMap<Integer,Set<String>>();
-	//the list of candidates
-	HashMap<Integer,Set<String>> candidateSetList = new HashMap<Integer,Set<String>>();
-	//to keep the count of a candidate set
-	HashMap<Integer, Integer> support_count = new HashMap<Integer, Integer>();
-	
-	
-	
 	List<TreeSet<SetItem>> prevItemSets;  
 	HashMap<TreeSet<SetItem>, int[]> prevItemSetsMap;
 	HashMap<TreeSet<SetItem>, int[]> allValidItemSets;
@@ -24,10 +15,10 @@ public class APriori {
 	Set<Association> associationRules;
 	
 	List<String[]> allrecords = new ArrayList<String[]>();
+	
 	int record_count = 0;
 	int numIndexes = 1;
 	double min_support, min_confidence;
-	boolean stop = false;
 	String filePath;	
 	
 	public APriori(String filepath, double support, double confidence) {
@@ -43,7 +34,6 @@ public class APriori {
 	
 	public void getData(){
 		File f = new File(filePath);
-		//File f = new File("data/test.csv");
 		try {
 			BufferedReader buf = new BufferedReader(new FileReader(f));
 
@@ -118,11 +108,10 @@ public class APriori {
 			}
 			rowNum++;
 		}
-		System.out.println("count: "+count);
+
 		for(Map.Entry<SetItem, int[]> item : map.entrySet()) {
 			double sup = ((double) getNumBitsSet(item.getValue())) / ((double) record_count);
 			if(sup >= min_support) {
-				System.out.println("Entry: (row: "+item.getKey().rowIndex+", "+ item.getKey().value +"), count: "+getNumBitsSet(item.getValue()));
 				TreeSet<SetItem> newSet = new TreeSet<SetItem>(comp);
 				newSet.add(item.getKey());
 				prevItemSets.add(newSet);
@@ -130,8 +119,6 @@ public class APriori {
 				allValidItemSets.put(newSet, item.getValue());
 			}
 		}
-		
-		System.out.println("num one sets: "+prevItemSets.size());
 		
 	}
 	
@@ -186,16 +173,7 @@ public class APriori {
 					int[] curRows = Arrays.copyOf(prevItemSetsMap.get(prevItemSets.get(i)), prevItemSetsMap.get(prevItemSets.get(i)).length); 
 					int[] joinRows = Arrays.copyOf(prevItemSetsMap.get(prevItemSets.get(j)), prevItemSetsMap.get(prevItemSets.get(j)).length);
 					
-					/*System.out.println("curRows");
-					for(int val : curRows) System.out.println(val);
-					System.out.println("joinRows");
-					for(int val : joinRows) System.out.println(val);*/
-					
 					curRows = arrayBitIntersection(curRows, joinRows);
-					
-					/*System.out.println("new set");
-					for(SetItem item : curSet) System.out.println(item.value+" "+((double) curRows.size() / (double) record_count));
-					for(int val : curRows) System.out.println(val);*/
 					
 					if(((double) getNumBitsSet(curRows) / (double) record_count) >= min_support) {
 						candidates.add(curSet);
@@ -208,7 +186,6 @@ public class APriori {
 				
 			}
 		}
-		System.out.println("Count total: "+count);
 		prevItemSetsMap = newMap;
 		prevItemSets = candidates;
 		
@@ -228,21 +205,10 @@ public class APriori {
 		int i = 2;
 		List<TreeSet<SetItem>> candidateItemSets = generateCandidateItemSets();
 		while(candidateItemSets.size() > 0) {
-		
-			System.out.println("size "+i+": There are "+candidateItemSets.size()+" sets");
 			candidateItemSets = generateCandidateItemSets();
 			i++;
 		}
-		
-		System.out.println("num of total sets: "+allValidItemSets.size());
-		
-		for(Map.Entry<TreeSet<SetItem>, int[]> entry : allValidItemSets.entrySet()) {
-			for(SetItem item : entry.getKey()) System.out.print(item.value+", ");
-			System.out.println(((double)entry.getValue().length / (double)record_count));
-		}
-		
-		
-		
+			
 		Comparator<Map.Entry<TreeSet<SetItem>, int[]>> comp = new SetCountComparator();
 		Comparator<Association> confComp = new AssociationComparator();
 		
@@ -265,6 +231,7 @@ public class APriori {
 			e.printStackTrace();
 			return;
 		}
+		
 		out.println("==Frequent itemsets (min_sup="+(min_support * 100)+"%)");
 		Map.Entry<TreeSet<SetItem>, int[]> entry;
 		

@@ -18,12 +18,8 @@ public class Application {
 			return;
 		}
 
-		final long start = System.currentTimeMillis();
 		APriori a = new APriori(filename, support, conf);
 		a.getData();
 		a.algorithm();
-		System.out.println("number of larger sets = " + a.largeSetList.size());
-		final long end = System.currentTimeMillis();
-		System.out.println("Total time: "+ (end - start));
 	}
 }

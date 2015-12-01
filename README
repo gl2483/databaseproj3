@@ -1,14 +1,54 @@
-﻿John Grossmann, jg3538
+﻿﻿John Grossmann, jg3538
+Guanqi Luo, gl2483
 
+List of Files:
 
+Makefile
+README
+run.sh
+class (dir)
+data (dir)
+    final_data.csv
+src (dir)
+    Application.java
+    Apriori.java
+    AssociationComparator.java
+    Association.java
+    SetCountComparator.java
+    SetItemComparator.java
+    SetItem.java
 
+RUNNING PROGRAM:
+To run the program, it must first be compiled using: make
+
+Actually running the program, type: ./run.sh <dataset> <min_sup> <min_conf>
+<dataset> is the dataset to parse (ours is located in “data/final_data.csv”).
+<min_sup> is the minimum support threshold from 0 to 1
+<min_conf> is the minimum confidence threshold from 0 to 1. 
+The program outputs to output.txt
 
 Internal Design:
 
-We used an algorithm similar to AprioriTid, but we stored all Tids with each subset of items as keys instead of storing the subsets with the Tids as keys.
+We used an algorithm similar to AprioriTid, but we stored all Tids with each subset of items as keys instead of storing the subsets with the Tids as keys. We chose this method for speed because our final dataset has over 78,000 rows so we wanted the algorithm to be more efficient.
 
-To generate the itemsets of size 1, we iterated over every row of our dataset and stored each attribute value inside a hashmap with its corresponding list of rows that it is found in. We use an array of integers with each bit as an indicator of a particular row in the dataset. After iterating over the dataset, we keep all of the attributes that meet or exceed the minimum support inside a list of previously found itemsets as TreeSets which are sorted based on column number in the dataset of the atrribute, then lexicographically if the same column number. We also store each TreeSet with its list of rows that all of the attributes in the set are found in inside the dataset, inside a hashmap. Call this storage previousSets. We also keep a hashmap of all itemsets that have exceeded the min support called allItemSets. 
+To hold our data we used two main data structures: SetItem and Association. SetItem contains a column number and a string value. The columnn number is the column number within the dataset that the attribute is found in. The value is the value in the dataset. We store SetItems in TreeSets to keep them sorted according to column number, then alphabetically if two attributes have the same column number. Association contains a TreeSet of SetItems as the LHS value, a SetItem as a RHS value, and a confidence value for the association rule. 
 
-To generate each round of candidates, we follow the apriori algorithm. Generate all possible subsets of each previous itemset by joining two subsets if their values are the same except for the last item. Append the last item to the first subset if it is greater lexicographically than the last item of the first subset. Also, intersect the list of rows that each of the subsets are found in inside the dataset to create the new list of rows for the larger subset. We only keep this subset if it is valid. A subset is valid, according to the alogorithm, if all of its k-1 subsets are found within the list of k-1 subsets. Also, of course, each new subset must meet the min support value based on its new intersected list of rows. 
+To generate the itemsets of size 1, we iterated over every row of our dataset and stored each attribute value inside a hashmap of SetItems with its corresponding list of rows that it is found in. We use an array of integers with each bit as an indicator of a particular row in the dataset. After iterating over the dataset, we keep all of the attributes that meet or exceed the minimum support inside a list of previously found TreeSets of SetItems. We also store each TreeSet with its list of rows that all of the attributes in the set are found in, inside a hashmap. Call this storage previousSets. We also keep a hashmap of all TreeSets of Setitems that have exceeded the min support called allItemSets.
 
-When generating each round of itemsets, we also generate association rules. We store association rules of LHS size 1 when creating itemsets of size 2, rules of LHS size 2 when creating itemsets of size 3, etc. For each new itemset to be createed, we generate all subsets of LHS size k-1 with RHS being the removed item. We keep all rules that exceed the min confidence threshold. 
+To generate each round of candidates, we follow the apriori algorithm. Generate all possible combinations of each k-1 TreeSet by joining two TreeSets if their values are the same except for the last item. Append the last item to the first TreeSEt if it is greater lexicographically than the last item of the first TreeSet. Also, intersect the list of rows that each of the TreeSets are found in inside the dataset, to create the new list of rows for the larger combined TreeSet. We only keep this new TreeSet if it is valid. A TreeSet is valid, according to the alogorithm, if all of its possible k-1 subsets are found within the list of k-1 TreeSets (previousSets). Also, of course, each new TreeSet must meet the min support value based on its new intersected list of rows.
+
+When generating each round of TreeSets, we also generate association rules. We store association rules of LHS size 1 when creating TreeSets of size 2, rules of LHS size 2 when creating TreeSets of size 3, etc. For each new TreeSet to be created, we generate all subsets of LHS size k-1 with RHS being the removed item. We keep all rules that exceed the min confidence threshold.
+
+Generating Dataset:
+
+We based our integrated dataset mainly on the NYC Vehicle Collision Dataset. We’ve tried to combine this dataset to other datasets such as NYC Traffic Volume, however, the intersection of these dataset are not enough for running the algorithm. To generate the integrated dataset, we filtered out all dates after 4/9/2013 and before 9/28/2013 to shrink the size of the dataset. Deleted columns latitude, longitude, location, unique key, off-street, contributing factor vechicle 3 through 5 and  Vechicle type code 3 through 5. We also removed injuries and killed except for persons and finally the header row. For injuries and killed persons, set to null if 0. Also removed the row if the borough or zip is empty. For the time columns in the original dataset, we turned them into a single column that contains the actual time in hour. For each row, we created 4 new rows, since we have VTC1,VTC2, CFV1 and CFV2 in the original dataset, we create every combination of the four columns so that each row would have only one VTC and CFV. Lastly, we trim all the white spaces before and after the actual attributes.
+
+Our dataset is interesting because it shows the correlation between location, time, causalty and severity for all traffic accidents. 
+
+INTERESTING SAMPLE RUN:
+./run.sh data/final_data.csv .01 .45
+
+This will result in association rules that indicate which types of vehicles get in the most accidents in certain boroughs, which vehicles are associated with injuries in accidents, the time of day in certain boroughs most likely to have accidents, and contributing factors for accidents in specific vehicle types. 
+
+
+

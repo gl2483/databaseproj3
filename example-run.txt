@@ -193,7 +193,7 @@
 [Hour: 3], 1.0064738013352215%
 
 
-==High-confidence association rules (min_conf=40.0%)
+==High-confidence association rules (min_conf=45.0%)
 [Zip: 10467] => [bronx] (Conf: 100.0%, Supp: 1.0418774023872142%)
 [CrossStreet: 2 avenue] => [manhattan] (Conf: 92.00695047784535%, Supp: 1.339014768359296%)
 [Vehicle: taxi] => [manhattan] (Conf: 81.93764493687195%, Supp: 4.020837548047744%)
@@ -229,5 +229,3 @@
 [Hour: 12] => [Vehicle: passenger vehicle] (Conf: 45.818345323741006%, Supp: 2.5768763908557557%)
 [Hour: 13] => [Vehicle: passenger vehicle] (Conf: 45.627217699853894%, Supp: 2.7640097107020027%)
 [Hour: 9] => [Vehicle: passenger vehicle] (Conf: 45.35993061578491%, Supp: 2.6451547643131703%)
-[Hour: 10] => [Vehicle: passenger vehicle] (Conf: 44.5593419506463%, Supp: 2.3973295569492215%)
-[Hour: 11] => [Vehicle: passenger vehicle] (Conf: 44.54933692964711%, Supp: 2.5060691887517703%)
