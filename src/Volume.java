@@ -22,8 +22,8 @@ public class Volume implements Serializable, Cloneable {
 	public int volume;
 	public String Borough;
 	public String zip;
-	public int personInjured;
-	public int personKilled;
+	public String personInjured;
+	public String personKilled;
 	public int pedestrianInjured;
 	public int perdestrianKilled;
 	public int cyclistInjured;
@@ -165,9 +165,11 @@ public class Volume implements Serializable, Cloneable {
 							break;
 					case 5: newV.CrossStreet = expandStreet(array[i].toLowerCase().trim());
 							break;
-					case 6: newV.personInjured = Integer.parseInt(array[i].trim());
+					case 6: newV.personInjured = array[i].trim();
+							if(newV.personInjured.equals("0")) newV.personInjured = null;
 							break;
-					case 7: newV.personKilled = Integer.parseInt(array[i].trim());
+					case 7: newV.personKilled = array[i].trim();
+							if(newV.personKilled.equals("0")) newV.personKilled = null;
 							break;
 					case 14: if(j < 2) {
 								newV.CFV1 = array[i].toLowerCase().trim();

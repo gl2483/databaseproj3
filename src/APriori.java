@@ -90,10 +90,21 @@ public class APriori {
 		TreeMap<SetItem, int[]> map = new TreeMap<SetItem, int[]>(comp);
 		
 		int rowNum = 0;
+		int count = 0;
 		for(String[] row : allrecords) {
 			for(int i=0; i<row.length; i++) {
 				if(row[i] == null || row[i].equals("") || row[i].equals("null")) continue;
-				SetItem newItem = new SetItem(i, row[i]);
+				
+				String item = row[i];
+				if(i == 7) {
+					if(!row[i].equals("0")) item = "true";
+				}else if(i == 6) {
+					if(Integer.parseInt(row[i]) > 1) {
+						item = "> 1";
+						count++;
+					}
+				}
+				SetItem newItem = new SetItem(i, item);
 				
 				if(map.containsKey(newItem)) {
 					int[] rows = map.get(newItem);
@@ -107,7 +118,7 @@ public class APriori {
 			}
 			rowNum++;
 		}
-		
+		System.out.println("count: "+count);
 		for(Map.Entry<SetItem, int[]> item : map.entrySet()) {
 			double sup = ((double) getNumBitsSet(item.getValue())) / ((double) record_count);
 			if(sup >= min_support) {
@@ -272,7 +283,7 @@ public class APriori {
 						break;
 				case 6: out.print("Injuries: "+item.value);
 						break;
-				case 7: out.print("Killed: "+item.value);
+				case 7: out.print("Persons Killed: "+item.value);
 						break;
 				case 8: out.print("Contrib Factor: "+item.value);
 						break;

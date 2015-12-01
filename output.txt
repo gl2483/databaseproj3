@@ -1,0 +1,233 @@
+==Frequent itemsets (min_sup=1.0%)
+[Vehicle: passenger vehicle], 47.80750556342303%
+[brooklyn], 30.138579809832084%
+[manhattan], 25.737153550475423%
+[queens], 25.088509002629984%
+[Vehicle: sport utility / station wagon], 18.261936071211814%
+[Injuries: 1], 15.481488974307101%
+[brooklyn,Vehicle: passenger vehicle], 14.889743071009509%
+[queens,Vehicle: passenger vehicle], 13.287730123406838%
+[bronx], 12.64161440420797%
+[manhattan,Vehicle: passenger vehicle], 9.21758041675096%
+[Injuries: 1,Vehicle: passenger vehicle], 7.279233259154359%
+[Hour: 16], 6.990946793445277%
+[Hour: 17], 6.910024276755007%
+[Hour: 14], 6.8442747319441635%
+[bronx,Vehicle: passenger vehicle], 6.562310337851507%
+[staten island], 6.394143232854542%
+[Hour: 18], 6.203216670038438%
+[Hour: 15], 6.1804572122193004%
+[Hour: 13], 6.057809022860611%
+[Hour: 8], 5.970564434553915%
+[Hour: 9], 5.831478858992515%
+[brooklyn,Vehicle: sport utility / station wagon], 5.756878413918673%
+[Hour: 11], 5.625379324296985%
+[Hour: 12], 5.6241149099737004%
+[Hour: 10], 5.380082945579607%
+[brooklyn,Injuries: 1], 5.337092858587902%
+[Hour: 19], 5.232146469755209%
+[queens,Vehicle: sport utility / station wagon], 5.043748735585677%
+[Vehicle: taxi], 4.9071919886708475%
+[Hour: 20], 4.540511834918066%
+[manhattan,Vehicle: taxi], 4.020837548047744%
+[manhattan,Vehicle: sport utility / station wagon], 3.9753186324094676%
+[Injuries: > 1], 3.9525591745903297%
+[queens,Injuries: 1], 3.8703722435767753%
+[staten island,Vehicle: passenger vehicle], 3.850141614404208%
+[Hour: 21], 3.60484523568683%
+[Hour: 17,Vehicle: passenger vehicle], 3.4392069593364356%
+[Vehicle: van], 3.386101557758446%
+[Hour: 16,Vehicle: passenger vehicle], 3.3734574145255913%
+[Hour: 14,Vehicle: passenger vehicle], 3.3469047137365973%
+[manhattan,Injuries: 1], 3.2811551689257534%
+[Hour: 22], 3.112988063928788%
+[Hour: 18,Vehicle: passenger vehicle], 3.0775844628767954%
+[Hour: 15,Vehicle: passenger vehicle], 2.9840178029536717%
+[Vehicle: other], 2.90941735787983%
+[Hour: 8,Vehicle: passenger vehicle], 2.847461056038843%
+[Injuries: 1,Vehicle: sport utility / station wagon], 2.818379526603277%
+[Hour: 13,Vehicle: passenger vehicle], 2.7640097107020027%
+[Hour: 7], 2.72860610965001%
+[Hour: 9,Vehicle: passenger vehicle], 2.6451547643131703%
+[Hour: 23], 2.6350394497268863%
+[Hour: 12,Vehicle: passenger vehicle], 2.5768763908557557%
+[Hour: 19,Vehicle: passenger vehicle], 2.541472789803763%
+[brooklyn,Injuries: 1,Vehicle: passenger vehicle], 2.5351507181873356%
+[Hour: 11,Vehicle: passenger vehicle], 2.5060691887517703%
+[Contrib Factor: driver inattention/distraction], 2.452963787173781%
+[Hour: 10,Vehicle: passenger vehicle], 2.3973295569492215%
+[Injuries: > 1,Vehicle: passenger vehicle], 2.3176714545822374%
+[Hour: 20,Vehicle: passenger vehicle], 2.2392777665385397%
+[Hour: 17,brooklyn], 2.1988165081934046%
+[Hour: 0], 2.1722638074044105%
+[Hour: 16,brooklyn], 2.138124620675703%
+[bronx,Injuries: 1], 2.1254804774428484%
+[Hour: 14,brooklyn], 2.1115719198867082%
+[bronx,Vehicle: sport utility / station wagon], 2.0913412907141415%
+[Vehicle: bicycle], 2.085019219097714%
+[queens,Injuries: 1,Vehicle: passenger vehicle], 2.0483512037224356%
+[Hour: 6], 1.945933643536314%
+[Hour: 18,brooklyn], 1.9282318430103176%
+[Hour: 15,brooklyn], 1.9143232854541776%
+[Hour: 13,brooklyn], 1.829607525794052%
+[Hour: 9,brooklyn], 1.815698968237912%
+[Hour: 16,queens], 1.7866174388023466%
+[Hour: 21,Vehicle: passenger vehicle], 1.7701800525996358%
+[Hour: 17,queens], 1.725925551284645%
+[Hour: 8,queens], 1.7208678939915032%
+[Hour: 12,brooklyn], 1.714545822375076%
+[Hour: 11,brooklyn], 1.704430507788792%
+[Hour: 14,queens], 1.7019016791422215%
+[Vehicle: bus], 1.6981084361723648%
+[Hour: 8,brooklyn], 1.684199878616225%
+[Vehicle: small com veh(4 tires)], 1.676613392676512%
+[Hour: 14,manhattan], 1.6627048351203721%
+[Zip: 11207], 1.6563827635039452%
+[brooklyn,Zip: 11207], 1.6563827635039452%
+[Hour: 10,brooklyn], 1.6525895205340886%
+[Injuries: 1,Vehicle: bicycle], 1.6361521343313776%
+[Hour: 13,manhattan], 1.6336233056848066%
+[Hour: 11,manhattan], 1.598219704632814%
+[Hour: 17,manhattan], 1.5956908759862432%
+[Hour: 16,manhattan], 1.5931620473396721%
+[Hour: 18,queens], 1.5805179041068176%
+[CrossStreet: broadway], 1.5741958324903906%
+[Hour: 15,queens], 1.5678737608739632%
+[Hour: 19,brooklyn], 1.556494031964394%
+[Hour: 22,Vehicle: passenger vehicle], 1.5438498887315395%
+[Vehicle: large com veh(6 or more tires)], 1.537527817115112%
+[Hour: 18,manhattan], 1.5349989884685413%
+[Hour: 9,queens], 1.528676916852114%
+[Hour: 12,manhattan], 1.522354845235687%
+[Hour: 10,manhattan], 1.5185616022658306%
+[Hour: 1], 1.517297187942545%
+[Vehicle: pick-up truck], 1.5097107020028322%
+[Hour: 15,manhattan], 1.500859801739834%
+[CrossStreet: 3 avenue], 1.4958021444466922%
+[Zip: 10022], 1.4907444871535505%
+[manhattan,Zip: 10022], 1.4907444871535505%
+[Hour: 13,queens], 1.464191786364556%
+[queens,Zip: 11101], 1.4578697147481288%
+[Zip: 11101], 1.4578697147481288%
+[CrossStreet: 2 avenue], 1.4553408861015578%
+[Hour: 19,manhattan], 1.433845842605705%
+[brooklyn,Injuries: > 1], 1.4262593566659922%
+[manhattan,Zip: 10016], 1.4186728707262797%
+[Zip: 10016], 1.4186728707262797%
+[Hour: 11,queens], 1.3997066558769977%
+[Contrib Factor: other vehicular], 1.397177827230427%
+[staten island,Vehicle: sport utility / station wagon], 1.394648998583856%
+[staten island,Zip: 10314], 1.3921201699372852%
+[Zip: 10314], 1.3921201699372852%
+[Hour: 16,Vehicle: sport utility / station wagon], 1.3870625126441434%
+[Hour: 20,brooklyn], 1.3845336839975722%
+[Hour: 12,queens], 1.3731539550880032%
+[manhattan,Zip: 10019], 1.361774226178434%
+[Zip: 10019], 1.361774226178434%
+[Road: broadway], 1.3592453975318632%
+[Hour: 5], 1.3529233259154358%
+[Hour: 17,Vehicle: sport utility / station wagon], 1.3466012542990087%
+[Hour: 9,manhattan], 1.3428080113291525%
+[Hour: 7,Vehicle: passenger vehicle], 1.3402791826825815%
+[CrossStreet: 2 avenue,manhattan], 1.339014768359296%
+[manhattan,Zip: 10036], 1.3301638680962977%
+[Zip: 10036], 1.3301638680962977%
+[manhattan,Vehicle: van], 1.325106210803156%
+[Hour: 23,Vehicle: passenger vehicle], 1.3213129678332995%
+[manhattan,Zip: 10001], 1.3061399959538742%
+[Zip: 10001], 1.3061399959538742%
+[Hour: 4], 1.2909670240744486%
+[Hour: 10,queens], 1.2897026097511632%
+[Hour: 8,manhattan], 1.2757940521950233%
+[Hour: 19,queens], 1.2669431519320251%
+[Hour: 20,manhattan], 1.258092251669027%
+[CrossStreet: 5 avenue], 1.2517701800525998%
+[Hour: 2], 1.241654865466316%
+[Zip: 11201], 1.2264818935868904%
+[brooklyn,Zip: 11201], 1.2264818935868904%
+[Contrib Factor: driver inattention/distraction,Vehicle: passenger vehicle], 1.2239530649403196%
+[Zip: 11203], 1.2037224357677523%
+[brooklyn,Zip: 11203], 1.2037224357677523%
+[Hour: 14,Vehicle: sport utility / station wagon], 1.1961359498280397%
+[Hour: 18,Vehicle: sport utility / station wagon], 1.1923427068581833%
+[Hour: 15,Vehicle: sport utility / station wagon], 1.188549463888327%
+[CrossStreet: 8 avenue], 1.188549463888327%
+[Zip: 11234], 1.1759053206554724%
+[brooklyn,Zip: 11234], 1.1759053206554724%
+[Vehicle: livery vehicle], 1.172112077685616%
+[CrossStreet: broadway,manhattan], 1.1670544203924742%
+[Hour: 18,Injuries: 1], 1.144294962573336%
+[Road: atlantic avenue], 1.141766133926765%
+[bronx,Injuries: 1,Vehicle: passenger vehicle], 1.1392373052801943%
+[manhattan,Zip: 10013], 1.1392373052801943%
+[Zip: 10013], 1.1392373052801943%
+[Zip: 11385], 1.1316508193404815%
+[queens,Zip: 11385], 1.1316508193404815%
+[Hour: 17,Injuries: 1], 1.1278575763706251%
+[Zip: 11236], 1.1253287477240543%
+[brooklyn,Zip: 11236], 1.1253287477240543%
+[Hour: 17,brooklyn,Vehicle: passenger vehicle], 1.119006676107627%
+[Hour: 20,queens], 1.1177422617843416%
+[Hour: 8,Vehicle: sport utility / station wagon], 1.1164778474610562%
+[CrossStreet: 7 avenue], 1.1126846044911998%
+[Hour: 16,brooklyn,Vehicle: passenger vehicle], 1.1088913615213434%
+[queens,Injuries: > 1], 1.107626947198058%
+[Hour: 21,brooklyn], 1.0924539753186324%
+[brooklyn,Vehicle: other], 1.0823386607323489%
+[Hour: 14,brooklyn,Vehicle: passenger vehicle], 1.0557859599433541%
+[Zip: 10002], 1.0431418167104995%
+[manhattan,Zip: 10002], 1.0431418167104995%
+[CrossStreet: 3 avenue,manhattan], 1.0418774023872142%
+[bronx,Zip: 10467], 1.0418774023872142%
+[Zip: 10467], 1.0418774023872142%
+[Hour: 11,Vehicle: sport utility / station wagon], 1.0406129880639288%
+[brooklyn,Injuries: 1,Vehicle: sport utility / station wagon], 1.0406129880639288%
+[Hour: 0,Vehicle: passenger vehicle], 1.0304976734776452%
+[brooklyn,Zip: 11220], 1.0229111875379324%
+[Zip: 11220], 1.0229111875379324%
+[Hour: 9,Vehicle: sport utility / station wagon], 1.019117944568076%
+[brooklyn,Vehicle: van], 1.0178535302447906%
+[Hour: 13,Vehicle: sport utility / station wagon], 1.0140602872749342%
+[manhattan,Injuries: 1,Vehicle: passenger vehicle], 1.0102670443050779%
+[Hour: 19,Vehicle: sport utility / station wagon], 1.0064738013352215%
+[Hour: 3], 1.0064738013352215%
+
+
+==High-confidence association rules (min_conf=40.0%)
+[Zip: 10467] => [bronx] (Conf: 100.0%, Supp: 1.0418774023872142%)
+[CrossStreet: 2 avenue] => [manhattan] (Conf: 92.00695047784535%, Supp: 1.339014768359296%)
+[Vehicle: taxi] => [manhattan] (Conf: 81.93764493687195%, Supp: 4.020837548047744%)
+[Vehicle: bicycle] => [Injuries: 1] (Conf: 78.47180109157065%, Supp: 1.6361521343313776%)
+[CrossStreet: broadway] => [manhattan] (Conf: 74.13654618473896%, Supp: 1.1670544203924742%)
+[CrossStreet: 3 avenue] => [manhattan] (Conf: 69.65342349957734%, Supp: 1.0418774023872142%)
+[staten island] => [Vehicle: passenger vehicle] (Conf: 60.21356535495352%, Supp: 3.850141614404208%)
+[Injuries: > 1] => [Vehicle: passenger vehicle] (Conf: 58.63723608445297%, Supp: 2.3176714545822374%)
+[bronx,Injuries: 1] => [Vehicle: passenger vehicle] (Conf: 53.599048185603806%, Supp: 1.1392373052801943%)
+[queens] => [Vehicle: passenger vehicle] (Conf: 52.963410946477175%, Supp: 13.287730123406838%)
+[queens,Injuries: 1] => [Vehicle: passenger vehicle] (Conf: 52.923881084612866%, Supp: 2.0483512037224356%)
+[bronx] => [Vehicle: passenger vehicle] (Conf: 51.91038207641528%, Supp: 6.562310337851507%)
+[Hour: 16,brooklyn] => [Vehicle: passenger vehicle] (Conf: 51.86280307510349%, Supp: 1.1088913615213434%)
+[Hour: 17,brooklyn] => [Vehicle: passenger vehicle] (Conf: 50.89131684876366%, Supp: 1.119006676107627%)
+[Hour: 23] => [Vehicle: passenger vehicle] (Conf: 50.14395393474088%, Supp: 1.3213129678332995%)
+[Hour: 14,brooklyn] => [Vehicle: passenger vehicle] (Conf: 50.0%, Supp: 1.0557859599433541%)
+[Contrib Factor: driver inattention/distraction] => [Vehicle: passenger vehicle] (Conf: 49.896907216494846%, Supp: 1.2239530649403196%)
+[Hour: 17] => [Vehicle: passenger vehicle] (Conf: 49.77127172918573%, Supp: 3.4392069593364356%)
+[Hour: 18] => [Vehicle: passenger vehicle] (Conf: 49.61271911944557%, Supp: 3.0775844628767954%)
+[Hour: 22] => [Vehicle: passenger vehicle] (Conf: 49.59382615759545%, Supp: 1.5438498887315395%)
+[brooklyn] => [Vehicle: passenger vehicle] (Conf: 49.404262460144324%, Supp: 14.889743071009509%)
+[Hour: 20] => [Vehicle: passenger vehicle] (Conf: 49.317738791423%, Supp: 2.2392777665385397%)
+[Hour: 7] => [Vehicle: passenger vehicle] (Conf: 49.119555143651525%, Supp: 1.3402791826825815%)
+[Hour: 21] => [Vehicle: passenger vehicle] (Conf: 49.105576990529634%, Supp: 1.7701800525996358%)
+[Hour: 14] => [Vehicle: passenger vehicle] (Conf: 48.900794383890634%, Supp: 3.3469047137365973%)
+[Hour: 19] => [Vehicle: passenger vehicle] (Conf: 48.5741904301595%, Supp: 2.541472789803763%)
+[Hour: 15] => [Vehicle: passenger vehicle] (Conf: 48.28150572831424%, Supp: 2.9840178029536717%)
+[Hour: 16] => [Vehicle: passenger vehicle] (Conf: 48.254657261710975%, Supp: 3.3734574145255913%)
+[Hour: 8] => [Vehicle: passenger vehicle] (Conf: 47.69165607793308%, Supp: 2.847461056038843%)
+[brooklyn,Injuries: 1] => [Vehicle: passenger vehicle] (Conf: 47.50059227671168%, Supp: 2.5351507181873356%)
+[Hour: 0] => [Vehicle: passenger vehicle] (Conf: 47.43888242142026%, Supp: 1.0304976734776452%)
+[Injuries: 1] => [Vehicle: passenger vehicle] (Conf: 47.01894805619079%, Supp: 7.279233259154359%)
+[Hour: 12] => [Vehicle: passenger vehicle] (Conf: 45.818345323741006%, Supp: 2.5768763908557557%)
+[Hour: 13] => [Vehicle: passenger vehicle] (Conf: 45.627217699853894%, Supp: 2.7640097107020027%)
+[Hour: 9] => [Vehicle: passenger vehicle] (Conf: 45.35993061578491%, Supp: 2.6451547643131703%)
+[Hour: 10] => [Vehicle: passenger vehicle] (Conf: 44.5593419506463%, Supp: 2.3973295569492215%)
+[Hour: 11] => [Vehicle: passenger vehicle] (Conf: 44.54933692964711%, Supp: 2.5060691887517703%)

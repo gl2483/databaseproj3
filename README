@@ -1,0 +1,14 @@
+﻿John Grossmann, jg3538
+
+
+
+
+Internal Design:
+
+We used an algorithm similar to AprioriTid, but we stored all Tids with each subset of items as keys instead of storing the subsets with the Tids as keys.
+
+To generate the itemsets of size 1, we iterated over every row of our dataset and stored each attribute value inside a hashmap with its corresponding list of rows that it is found in. We use an array of integers with each bit as an indicator of a particular row in the dataset. After iterating over the dataset, we keep all of the attributes that meet or exceed the minimum support inside a list of previously found itemsets as TreeSets which are sorted based on column number in the dataset of the atrribute, then lexicographically if the same column number. We also store each TreeSet with its list of rows that all of the attributes in the set are found in inside the dataset, inside a hashmap. Call this storage previousSets. We also keep a hashmap of all itemsets that have exceeded the min support called allItemSets. 
+
+To generate each round of candidates, we follow the apriori algorithm. Generate all possible subsets of each previous itemset by joining two subsets if their values are the same except for the last item. Append the last item to the first subset if it is greater lexicographically than the last item of the first subset. Also, intersect the list of rows that each of the subsets are found in inside the dataset to create the new list of rows for the larger subset. We only keep this subset if it is valid. A subset is valid, according to the alogorithm, if all of its k-1 subsets are found within the list of k-1 subsets. Also, of course, each new subset must meet the min support value based on its new intersected list of rows. 
+
+When generating each round of itemsets, we also generate association rules. We store association rules of LHS size 1 when creating itemsets of size 2, rules of LHS size 2 when creating itemsets of size 3, etc. For each new itemset to be createed, we generate all subsets of LHS size k-1 with RHS being the removed item. We keep all rules that exceed the min confidence threshold. 
